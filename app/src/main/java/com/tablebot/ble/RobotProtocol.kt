@@ -27,7 +27,7 @@ object RobotProtocol {
     const val CMD_PAUSE: Byte = 0x25.toByte()
     const val CMD_CALIBRATION: Byte = 0x03
 
-    const val BLE_MTU = 10
+    const val BLE_MTU = 20
 
     // Response command IDs
     const val RESP_PATTERN_ACK = 0x81
@@ -229,8 +229,9 @@ object RobotProtocol {
 
         return payload
     }
-
+    
     fun splitIntoChunks(frame: ByteArray, mtu: Int = BLE_MTU): List<ByteArray> {
+        Log.i("RobotProtocol", "Splitting ${frame.size}-byte frame into chunks of $mtu bytes")
         val chunks = mutableListOf<ByteArray>()
         var offset = 0
         while (offset < frame.size) {
@@ -240,7 +241,7 @@ object RobotProtocol {
         }
         return chunks
     }
-
+    
     // Response parsing
     data class RobotResponse(
         val cmd: Int,
